@@ -11,7 +11,7 @@
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 
-  <title>Frontend Mentor | IP Address Tracker</title>
+  <title>IP Address Tracker</title>
 
   <style>
     body {
@@ -135,11 +135,22 @@
       .then((out) => {
         console.log('Output: ', out);
 
+        if (out.status === "fail") {
+          alert("Ip invalido!");
+          return;
+        }
+
         var mapProp = {
           center: new google.maps.LatLng(out.lat, out.lon),
           zoom: 10,
         };
         var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(out.lat, out.lon),
+          title: "Local",
+          map: map
+        });
 
         document.getElementById("ip").innerHTML = out.query;
 
@@ -149,6 +160,9 @@
         document.getElementById("timezone").innerHTML = out.timezone;
 
         document.getElementById("isp").innerHTML = out.isp.substr(0, 9);
+
+        document.getElementById("inputIP").value = "";
+
 
       }).catch(err => console.error(err));
   }
